@@ -569,7 +569,6 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           style={{ width: `${videoStates[stepIndex].progress}%` }}
         />
       </div>
-    </div>
   );
 
   const renderStepContent = () => {
@@ -957,7 +956,6 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           </Button>
         </div>
       )}
-    </div>
     </div>
   );
 }
