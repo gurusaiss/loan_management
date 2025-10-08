@@ -483,6 +483,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           }
         }}
         className="w-full h-full object-cover"
+        autoPlay
         poster={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 225'%3E%3Crect width='100%25' height='100%25' fill='%23000000'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial, sans-serif' font-size='18' fill='%23ffffff' text-anchor='middle' dy='.3em'%3E${title}%3C/text%3E%3C/svg%3E`}
         onPlay={() => {
           setVideoStates(prev => prev.map((state, index) => 
@@ -522,7 +523,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         }}
         playsInline
         muted={videoStates[stepIndex].muted}
-        preload="metadata"
+        preload="auto"
         key={`video-${stepIndex}-${videoUrls[stepIndex]}`} // Force re-render when URL changes
       >
         <source src={videoUrls[stepIndex]} type="video/mp4" />
