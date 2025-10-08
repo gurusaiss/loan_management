@@ -168,8 +168,11 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     const video = videoRefs.current[stepIndex];
     if (!video) return;
     if (video.paused) {
+      // Ensure audio is ON when starting playback via user interaction
+      video.muted = false;
+      video.volume = 0.8;
       video.play();
-      setVideoStates(prev => prev.map((s, i) => i === stepIndex ? { ...s, playing: true } : s));
+      setVideoStates(prev => prev.map((s, i) => i === stepIndex ? { ...s, playing: true, muted: false, userInteracted: true } : s));
     } else {
       video.pause();
       setVideoStates(prev => prev.map((s, i) => i === stepIndex ? { ...s, playing: false } : s));
@@ -398,11 +401,36 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     const handler = (e: KeyboardEvent) => {
       if (e.code === 'Space') {
         e.preventDefault();
+        const video = videoRefs.current[currentStep];
+        if (video) {
+          video.muted = false;
+          video.volume = 0.8;
+        }
         togglePlayPause(currentStep);
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
+  }, [currentStep]);
+
+  // On first user interaction (tap/click) during video steps, unmute and play with audio
+  React.useEffect(() => {
+    if (currentStep > 1) return; // only video steps
+    const onFirstInteract = () => {
+      const video = videoRefs.current[currentStep];
+      if (video) {
+        video.muted = false;
+        video.volume = 0.8;
+        if (video.paused) {
+          video.play().catch(() => {/* ignore */});
+        }
+        setVideoStates(prev => prev.map((s, i) => i === currentStep ? { ...s, muted: false, userInteracted: true, playing: !video.paused } : s));
+      }
+      // Run only once per step
+      window.removeEventListener('pointerdown', onFirstInteract);
+    };
+    window.addEventListener('pointerdown', onFirstInteract, { once: true });
+    return () => window.removeEventListener('pointerdown', onFirstInteract);
   }, [currentStep]);
 
   const handleNext = () => {
