@@ -100,32 +100,32 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         video.src = videoUrls[stepIndex];
         video.load();
       }
-      
+
       console.log(`Playing video ${stepIndex}: ${videoUrls[stepIndex]}`);
-      
+
       // User interaction - enable audio automatically when user clicks play
       video.volume = 0.8;
       video.muted = false;
-      
+
       video.play().then(() => {
         console.log(`Video ${stepIndex} playing successfully - Volume: ${video.volume}, Muted: ${video.muted}`);
-        setVideoStates(prev => prev.map((state, index) => 
-          index === stepIndex 
+        setVideoStates(prev => prev.map((state, index) =>
+          index === stepIndex
             ? { ...state, playing: true, error: false, muted: false, userInteracted: true }
             : state
         ));
-        
+
         // Show confirmation that audio is enabled
         toast.success(
-          currentLanguage === 'te' 
-            ? '🔊 వీడియో ఆడియో ఆన్‌తో ప్లే అవుతోంది' 
+          currentLanguage === 'te'
+            ? '🔊 వీడియో ఆడియో ఆన్‌తో ప్లే అవుతోంది'
             : '🔊 Video playing with audio',
           { duration: 2000 }
         );
       }).catch(error => {
         console.error('Video play failed:', error);
-        setVideoStates(prev => prev.map((state, index) => 
-          index === stepIndex 
+        setVideoStates(prev => prev.map((state, index) =>
+          index === stepIndex
             ? { ...state, error: true, playing: false }
             : state
         ));
@@ -138,8 +138,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     if (video) {
       console.log(`Pausing video ${stepIndex}`);
       video.pause();
-      setVideoStates(prev => prev.map((state, index) => 
-        index === stepIndex 
+      setVideoStates(prev => prev.map((state, index) =>
+        index === stepIndex
           ? { ...state, playing: false }
           : state
       ));
@@ -148,16 +148,16 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   const handleVideoProgress = (stepIndex: number, currentTime: number, duration: number) => {
     const progress = (currentTime / duration) * 100;
-    setVideoStates(prev => prev.map((state, index) => 
-      index === stepIndex 
+    setVideoStates(prev => prev.map((state, index) =>
+      index === stepIndex
         ? { ...state, progress }
         : state
     ));
   };
 
   const handleVideoEnded = (stepIndex: number) => {
-    setVideoStates(prev => prev.map((state, index) => 
-      index === stepIndex 
+    setVideoStates(prev => prev.map((state, index) =>
+      index === stepIndex
         ? { ...state, playing: false, completed: true, progress: 100 }
         : state
     ));
@@ -181,8 +181,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   const handleVideoError = (stepIndex: number, error: any) => {
     console.error(`Video ${stepIndex} loading error:`, error);
-    setVideoStates(prev => prev.map((state, index) => 
-      index === stepIndex 
+    setVideoStates(prev => prev.map((state, index) =>
+      index === stepIndex
         ? { ...state, error: true, playing: false }
         : state
     ));
@@ -194,23 +194,23 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     try {
       // Check if camera is available
       if ('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices) {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: { 
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
             facingMode: 'environment', // Use back camera if available
             width: { ideal: 1280 },
             height: { ideal: 720 }
-          } 
+          }
         });
-        
+
         // Create a temporary video element for camera preview
         const video = document.createElement('video');
         video.srcObject = stream;
         video.play();
-        
+
         // Stop camera after 3 seconds and extract data
         setTimeout(() => {
           stream.getTracks().forEach(track => track.stop());
-          
+
           // Simulate ML extraction with realistic data in English by default
           const extractedData = {
             aadhaarNumber: '1234 5678 9012',
@@ -220,19 +220,19 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             address: '123, Gandhi Street, Hyderabad, Telangana - 500001',
             mobileNumber: '9876543210'
           };
-          
+
           toast.success(
-            currentLanguage === 'te' 
-              ? 'ఆధార్ కార్డ్ విజయవంతంగా స్కాన్ చేయబడింది' 
+            currentLanguage === 'te'
+              ? 'ఆధార్ కార్డ్ విజయవంతంగా స్కాన్ చేయబడింది'
               : 'Aadhaar card scanned successfully'
           );
-          
+
           proceedWithExtractedData(extractedData);
         }, 3000);
-        
+
         toast.info(
-          currentLanguage === 'te' 
-            ? 'కెమెరా ప్రారంభించబడింది. ఆధార్ కార్డ్‌ను కెమెరా ముందు ఉంచండి' 
+          currentLanguage === 'te'
+            ? 'కెమెరా ప్రారంభించబడింది. ఆధార్ కార్డ్‌ను కెమెరా ముందు ఉంచండి'
             : 'Camera started. Hold Aadhaar card in front of camera'
         );
       } else {
@@ -242,11 +242,11 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     } catch (error) {
       console.error('Camera scan error:', error);
       toast.error(
-        currentLanguage === 'te' 
-          ? 'కెమెరా యాక్సెస్ చేయడంలో లోపం. మాన్యువల్ ఎంట్రీ ఉపయోగించండి' 
+        currentLanguage === 'te'
+          ? 'కెమెరా యాక్సెస్ చేయడంలో లోపం. మాన్యువల్ ఎంట్రీ ఉపయోగించండి'
           : 'Camera access error. Please use manual entry'
       );
-      
+
       // Fallback to dummy data
       proceedWithDummyData();
     }
@@ -275,18 +275,18 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       address: '123, Gandhi Street, Hyderabad, Telangana - 500001',
       mobileNumber: '9876543210'
     };
-    
+
     proceedWithExtractedData(mockAadhaarData);
   };
 
   const proceedWithExtractedData = (extractedData: any) => {
     setScannedData(extractedData);
-    
+
     // Save profile data to localStorage
     localStorage.setItem('user-profile', JSON.stringify(extractedData));
     localStorage.setItem('user-phone', extractedData.mobileNumber);
     localStorage.setItem('user-auth-method', 'phone');
-    
+
     // Auto-proceed to OTP step after 1 second
     setTimeout(() => {
       setCurrentStep(currentStep + 1);
@@ -296,13 +296,13 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
   const verifyOTP = async () => {
     setIsVerifying(true);
-    
+
     // Simulate OTP verification
     await new Promise(resolve => setTimeout(resolve, 1500));
-    
+
     setIsVerifying(false);
     setCurrentStep(currentStep + 1);
-    
+
     toast.success(currentLanguage === 'te' ? 'E-KYC పూర్తయింది' : 'E-KYC completed successfully');
   };
 
@@ -316,36 +316,36 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           // Force load the correct video source
           video.src = videoUrls[currentStepIndex];
           video.load(); // Reload the video element
-          
+
           // Set volume for when user unmutes
           video.volume = 0.8;
-          
+
           // Try unmuted autoplay first (will likely fail due to browser policies)
           video.muted = false;
           video.play().then(() => {
             // Success! Audio autoplay worked
-            setVideoStates(prev => prev.map((state, index) => 
-              index === currentStepIndex 
+            setVideoStates(prev => prev.map((state, index) =>
+              index === currentStepIndex
                 ? { ...state, playing: true, autoPlayed: true, muted: false, error: false, userInteracted: true }
                 : state
             ));
             console.log(`Auto-play started for video ${currentStepIndex} with audio enabled`);
-            
+
           }).catch(error => {
             console.log('Unmuted auto-play blocked by browser (expected behavior) - falling back to muted autoplay');
             // Fallback to muted autoplay (browsers allow this)
             video.muted = true;
             video.play().then(() => {
-              setVideoStates(prev => prev.map((state, index) => 
-                index === currentStepIndex 
+              setVideoStates(prev => prev.map((state, index) =>
+                index === currentStepIndex
                   ? { ...state, playing: true, autoPlayed: true, muted: true, error: false }
                   : state
               ));
               console.log(`Auto-play started for video ${currentStepIndex} - muted (tap to unmute)`);
-              
+
             }).catch(() => {
-              setVideoStates(prev => prev.map((state, index) => 
-                index === currentStepIndex 
+              setVideoStates(prev => prev.map((state, index) =>
+                index === currentStepIndex
                   ? { ...state, error: true, autoPlayed: true }
                   : state
               ));
@@ -353,16 +353,16 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           });
         }
       }, 1000); // Increased delay for better loading
-      
+
       return () => clearTimeout(timer);
     }
-    
+
     // Auto-fill OTP and verify when OTP step loads - increased timing
     if (currentStep === 3 && scannedData) {
       setTimeout(() => {
         setOtp('123456');
         toast.success(currentLanguage === 'te' ? 'OTP ఆటో-ఫిల్ చేయబడింది' : 'OTP auto-filled');
-        
+
         // Auto-verify after 7 seconds for better user experience
         setTimeout(() => {
           verifyOTP();
@@ -375,10 +375,10 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   React.useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
-    
+
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
-    
+
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
@@ -388,8 +388,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   // Reset video states when stepping between videos
   React.useEffect(() => {
     // Reset non-current video states
-    setVideoStates(prev => prev.map((state, index) => 
-      index === currentStep 
+    setVideoStates(prev => prev.map((state, index) =>
+      index === currentStep
         ? state // Keep current step state
         : { ...state, playing: false, autoPlayed: false, error: false, progress: 0, userInteracted: false } // Reset others
     ));
@@ -422,7 +422,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         video.muted = false;
         video.volume = 0.8;
         if (video.paused) {
-          video.play().catch(() => {/* ignore */});
+          video.play().catch(() => {/* ignore */ });
         }
         setVideoStates(prev => prev.map((s, i) => i === currentStep ? { ...s, muted: false, userInteracted: true, playing: !video.paused } : s));
       }
@@ -445,8 +445,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
     // Pause current video if any
     const video = videoRefs.current[currentStep];
     if (video) video.pause();
-    setVideoStates(prev => prev.map((state, index) => 
-      index === currentStep 
+    setVideoStates(prev => prev.map((state, index) =>
+      index === currentStep
         ? { ...state, completed: true, progress: 100, userInteracted: true, playing: false }
         : state
     ));
@@ -473,7 +473,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           </div>
         </div>
       )}
-      
+
       <video
         ref={(el) => {
           videoRefs.current[stepIndex] = el;
@@ -486,12 +486,12 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         autoPlay
         poster={`data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 225'%3E%3Crect width='100%25' height='100%25' fill='%23000000'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial, sans-serif' font-size='18' fill='%23ffffff' text-anchor='middle' dy='.3em'%3E${title}%3C/text%3E%3C/svg%3E`}
         onPlay={() => {
-          setVideoStates(prev => prev.map((state, index) => 
+          setVideoStates(prev => prev.map((state, index) =>
             index === stepIndex ? { ...state, playing: true } : state
           ));
         }}
         onPause={() => {
-          setVideoStates(prev => prev.map((state, index) => 
+          setVideoStates(prev => prev.map((state, index) =>
             index === stepIndex ? { ...state, playing: false } : state
           ));
         }}
@@ -510,7 +510,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         onCanPlay={() => console.log(`Video ${stepIndex} can play: ${videoUrls[stepIndex]}`)}
         onVolumeChange={(e) => {
           const video = e.target as HTMLVideoElement;
-          setVideoStates(prev => prev.map((state, index) => 
+          setVideoStates(prev => prev.map((state, index) =>
             index === stepIndex ? { ...state, muted: video.muted } : state
           ));
           console.log(`Video ${stepIndex} volume changed - Muted: ${video.muted}, Volume: ${video.volume}`);
@@ -533,7 +533,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               <div>
                 <AlertCircle className="h-12 w-12 mx-auto mb-4 text-red-400" />
                 <p className="text-lg mb-4">
-                  {currentLanguage === 'te' 
+                  {currentLanguage === 'te'
                     ? 'వీడియో లోడ్ చేయడంలో లోపం'
                     : 'Error loading video'
                   }
@@ -544,7 +544,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               </div>
             ) : (
               <p className="text-lg">
-                {currentLanguage === 'te' 
+                {currentLanguage === 'te'
                   ? 'మీ బ్రౌజర్ వీడియో ప్లేబ్యాక్‌ను సపోర్ట్ చేయదు.'
                   : 'Your browser does not support video playback.'
                 }
@@ -564,9 +564,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
 
       {/* Progress Bar */}
       <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/50">
-        <div 
-          className="h-full bg-blue-500 transition-all duration-300" 
-          style={{ width: `${videoStates[stepIndex].progress}%` }} 
+        <div
+          className="h-full bg-blue-500 transition-all duration-300"
+          style={{ width: `${videoStates[stepIndex].progress}%` }}
         />
       </div>
     </div>
@@ -585,7 +585,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             {showSubtitles && videoStates[0].playing && (
               <div className="absolute bottom-16 left-4 right-4 bg-black/80 text-white p-4 rounded-lg">
                 <p className="text-sm text-center">
-                  {currentLanguage === 'te' 
+                  {currentLanguage === 'te'
                     ? 'Welcome to your Smart Loan Manager. We help you manage your financial future securely.'
                     : 'మీ స్మార్ట్ లోన్ మేనేజర్‌కు స్వాగతం. మీ ఆర్థిక భవిష్యత్తును మేము సురక్షితంగా నిర్వహిస్తాము.'
                   }
@@ -604,7 +604,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
             {showSubtitles && videoStates[1].playing && (
               <div className="absolute bottom-16 left-4 right-4 bg-black/80 text-white p-4 rounded-lg">
                 <p className="text-sm text-center">
-                  {currentLanguage === 'te' 
+                  {currentLanguage === 'te'
                     ? 'Explore our app features: loan tracking, comparison tools, voice support and much more.'
                     : 'మా యాప్ ఫీచర్లను అన్వేషించండి: లోన్ ట్రాకింగ్, కంపారిజన్, వాయిస్ సపోర్ట్ మరియు మరెన్నో.'
                   }
@@ -632,59 +632,58 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               </Button>
             </div>
 
-            <div className="h-full bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 flex items-start justify-start p-4 sm:p-6 overflow-y-auto">
-              <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 w-full max-w-sm mx-auto my-4 sm:my-8 text-center shadow-2xl">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
-                  <Shield className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+            <div className="h-full bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 flex items-center justify-center p-6">
+              <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
+                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Shield className="h-10 w-10 text-white" />
                 </div>
-                
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
+
+
+
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
                   {currentLanguage === 'te' ? 'ఆధార్ వెరిఫికేషన్' : 'Aadhaar Verification'}
                 </h2>
-                
-                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
-                  {currentLanguage === 'te' 
-                    ? 'ఆధార్ కార్డ్‌ను స్కాన్ చేయండి లేదా నంబర్ నమోదు చేయండి'
-                    : 'Scan Aadhaar card or enter number'
+
+                <p className="text-gray-600 mb-8">
+                  {currentLanguage === 'te'
+                    ? 'మీ గుర్తింపు ధృవీకరించడానికి ఆధార్ కార్డ్‌ను స్కాన్ చేయండి లేదా మాన్యువల్‌గా ఎంటర్ చేయండి'
+                    : 'Scan your Aadhaar card or enter details manually to verify your identity'
                   }
                 </p>
-                
-                <div className="space-y-3 sm:space-y-4">
+
+                <div className="space-y-4">
                   <Button
                     onClick={handleCameraScan}
-                    className="w-full h-12 sm:h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl sm:rounded-2xl text-sm sm:text-base"
+                    className="w-full h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl"
                   >
-                    <Camera className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3" />
+                    <Camera className="h-5 w-5 mr-3" />
                     {currentLanguage === 'te' ? 'కెమెరా స్కాన్' : 'Camera Scan'}
                   </Button>
-                  
-                  <div className="text-xs sm:text-sm text-gray-500 my-2">
-                    {currentLanguage === 'te' ? 'లేదా' : 'OR'}
+
+                  <div className="space-y-3">
+                    <Input
+                      type="text"
+                      placeholder={currentLanguage === 'te' ? 'ఆధార్ నంబర్ నమోదు చేయండి' : 'Enter Aadhaar Number'}
+                      value={aadhaarNumber}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, '').slice(0, 12);
+                        setAadhaarNumber(value);
+                      }}
+                      className="w-full h-12 border-2 border-gray-200 rounded-xl px-4 text-center font-mono tracking-widest"
+                      maxLength={12}
+                    />
+                    <Button
+                      onClick={handleAadhaarContinue}
+                      disabled={aadhaarNumber.length !== 12}
+                      className="w-full h-12 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-xl"
+                    >
+                      {currentLanguage === 'te' ? 'కొనసాగించు' : 'Continue'}
+                    </Button>
                   </div>
-                  
-                  <Input
-                    type="text"
-                    placeholder={currentLanguage === 'te' ? 'ఆధార్ నంబర్' : 'Aadhaar Number'}
-                    value={aadhaarNumber}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, '').slice(0, 12);
-                      setAadhaarNumber(value);
-                    }}
-                    className="w-full h-11 sm:h-12 border-2 border-gray-200 rounded-lg sm:rounded-xl px-4 text-center font-mono tracking-widest text-sm sm:text-base"
-                    maxLength={12}
-                  />
-                  
-                  <Button
-                    onClick={handleAadhaarContinue}
-                    disabled={aadhaarNumber.length !== 12}
-                    className="w-full h-11 sm:h-12 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-300 disabled:to-gray-400 text-white rounded-lg sm:rounded-xl text-sm sm:text-base"
-                  >
-                    {currentLanguage === 'te' ? 'కొనసాగించు' : 'Continue'}
-                  </Button>
                 </div>
-                
-                <p className="text-[10px] sm:text-xs text-gray-500 mt-4 sm:mt-5">
-                  {currentLanguage === 'te' 
+
+                <p className="text-xs text-gray-500 mt-6">
+                  {currentLanguage === 'te'
                     ? 'మీ డేటా సురక్షితంగా మరియు ఎంక్రిప్ట్ చేయబడింది'
                     : 'Your data is secure and encrypted'
                   }
@@ -697,7 +696,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       case 'otp_verification':
         return (
           <div className="absolute inset-0">
-                       {/* Translation Toggle Button - Top Right */}
+            {/* Translation Toggle Button - Top Right */}
             <div className="absolute top-6 right-6 z-30">
               <Button
                 variant="ghost"
@@ -716,13 +715,13 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Smartphone className="h-10 w-10 text-white" />
                 </div>
-                
+
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
                   {currentLanguage === 'te' ? 'OTP వెరిఫికేషన్' : 'OTP Verification'}
                 </h2>
-                
+
                 <p className="text-gray-600 mb-2">
-                  {currentLanguage === 'te' 
+                  {currentLanguage === 'te'
                     ? 'మేము 6-అంకెల కోడ్‌ను పంపాము'
                     : 'We sent a 6-digit code to'
                   }
@@ -730,7 +729,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 <p className="font-semibold text-gray-900 mb-8">
                   {scannedData?.mobileNumber || '+91 98765 43210'}
                 </p>
-                
+
                 {/* OTP Input - Centered */}
                 <div className="flex justify-center mb-6">
                   <InputOTP
@@ -748,7 +747,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                     </InputOTPGroup>
                   </InputOTP>
                 </div>
-                
+
                 <Button
                   onClick={verifyOTP}
                   disabled={otp.length !== 6 || isVerifying}
@@ -763,9 +762,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                     currentLanguage === 'te' ? 'వెరిఫై చేయండి' : 'Verify OTP'
                   )}
                 </Button>
-                
+
                 <p className="text-sm text-gray-500 mt-4">
-                  {currentLanguage === 'te' 
+                  {currentLanguage === 'te'
                     ? 'OTP రాలేదా? 30 సెకన్లలో మళ్ళీ పంపండి'
                     : "Didn't receive OTP? Resend in 30 seconds"
                   }
@@ -799,15 +798,15 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle className="h-10 w-10 text-white" />
                 </div>
-                
+
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
                   {at.kycCompleted}
                 </h2>
-                
+
                 <p className="text-gray-600 mb-6">
                   {at.identityVerified}
                 </p>
-                
+
                 <Card className="mb-6">
                   <CardContent className="p-6 space-y-6">
                     {/* Full Name */}
@@ -820,7 +819,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                         {at.nameValue}
                       </p>
                     </div>
-                    
+
                     {/* Date of Birth */}
                     <div className="text-left">
                       <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
@@ -829,7 +828,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                       </h4>
                       <p className="text-gray-800 font-medium text-left pl-7">{scannedData?.dateOfBirth}</p>
                     </div>
-                    
+
                     {/* Address */}
                     <div className="text-left">
                       <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
@@ -840,7 +839,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                         {at.addressValue}
                       </p>
                     </div>
-                    
+
                     {/* Mobile Number */}
                     <div className="text-left">
                       <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
@@ -849,7 +848,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                       </h4>
                       <p className="text-gray-800 font-medium text-left pl-7">{scannedData?.mobileNumber}</p>
                     </div>
-                    
+
                     {/* Bank Account */}
                     <div className="text-left">
                       <h4 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
@@ -863,7 +862,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                     </div>
                   </CardContent>
                 </Card>
-                
+
                 <Button
                   onClick={onComplete}
                   className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white h-12"
@@ -924,7 +923,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         {/* Progress Bar - Fixed at top */}
         <div className="absolute top-0 left-0 right-0 z-20 p-6">
           <div className="w-full bg-black/50 rounded-full h-1">
-            <div 
+            <div
               className="bg-gradient-to-r from-blue-500 to-indigo-500 h-1 rounded-full transition-all duration-500"
               style={{ width: `${((currentStep + 1) / onboardingSteps.length) * 100}%` }}
             />
