@@ -29,7 +29,6 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   // Video URLs - Replace these with your own video URLs
   const videoUrls = [
     'https://naliudaykumar.github.io/king-aloha-video/InShot_20251007_182259875%20(2).mp4', // App introduction video
-    'https://naliudaykumar.github.io/rthsrdtvhdxsbvd/InShot_20251008_192407102.mp4'  // Features overview video
   ];
 
   // Translation dictionary for Aadhaar page
@@ -69,11 +68,6 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       title: '',
       subtitle: '',
       content: 'app_intro'
-    },
-    {
-      title: '',
-      subtitle: '',
-      content: 'features_video'
     },
     {
       title: '',
@@ -595,24 +589,6 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           </div>
         );
 
-      case 'features_video':
-        return (
-          <div className="absolute inset-0">
-            {renderVideoPlayer(1, '')}
-
-            {/* Subtitles */}
-            {showSubtitles && videoStates[1].playing && (
-              <div className="absolute bottom-16 left-4 right-4 bg-black/80 text-white p-4 rounded-lg">
-                <p className="text-sm text-center">
-                  {currentLanguage === 'te'
-                    ? 'మా యాప్ ఫీచర్లను అన్వేషించండి: లోన్ ట్రాకింగ్, కంపారిజన్, వాయిస్ సపోర్ట్ మరియు మరెన్నో.'
-                    : 'Explore our app features: loan tracking, comparison tools, voice support and much more.'
-                  }
-                </p>
-              </div>
-            )}
-          </div>
-        );
 
       case 'aadhaar_scan':
         return (
