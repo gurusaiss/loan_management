@@ -748,20 +748,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                   </InputOTP>
                 </div>
 
-                <Button
-                  onClick={verifyOTP}
-                  disabled={otp.length !== 6 || isVerifying}
-                  className="w-full h-14 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-2xl"
-                >
-                  {isVerifying ? (
-                    <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                      {currentLanguage === 'te' ? 'వెరిఫై చేస్తోంది...' : 'Verifying...'}
-                    </div>
-                  ) : (
-                    currentLanguage === 'te' ? 'వెరిఫై చేయండి' : 'Verify OTP'
-                  )}
-                </Button>
+                {/* Verify OTP button moved to fixed bottom area */}
 
                 <p className="text-sm text-gray-500 mt-4">
                   {currentLanguage === 'te'
@@ -905,11 +892,10 @@ export function Onboarding({ onComplete }: OnboardingProps) {
                 <span className={`text-xs font-bold ${currentLanguage === 'en' ? 'text-yellow-300' : 'text-white'}`}>A</span>
               </div>
             </Button>
-          </div>
-        )}
-
-
-
+     return (
+    <div className="relative h-screen w-full flex flex-col overflow-hidden">
+      {/* Main content area with scroll */}
+      <div className="flex-1 relative overflow-y-auto">
         {/* Network Status Indicator */}
         {!isOnline && (
           <div className="absolute top-6 left-6 z-20">
@@ -921,8 +907,8 @@ export function Onboarding({ onComplete }: OnboardingProps) {
         )}
 
         {/* Progress Bar - Fixed at top */}
-        <div className="absolute top-0 left-0 right-0 z-20 p-6">
-          <div className="w-full bg-black/50 rounded-full h-1">
+        <div className="sticky top-0 left-0 right-0 z-20 p-4 sm:p-6 bg-white/80 backdrop-blur-sm">
+          <div className="w-full bg-gray-200 rounded-full h-1">
             <div
               className="bg-gradient-to-r from-blue-500 to-indigo-500 h-1 rounded-full transition-all duration-500"
               style={{ width: `${((currentStep + 1) / onboardingSteps.length) * 100}%` }}
@@ -930,24 +916,48 @@ export function Onboarding({ onComplete }: OnboardingProps) {
           </div>
         </div>
 
-        {/* Step Content - Full Screen */}
-        <div className="relative h-screen">
+        {/* Step Content */}
+        <div className="pb-24">
           {renderStepContent()}
         </div>
-
-        {/* Footer Button - Fixed at bottom - English labels only */}
-        {(currentStep === 0 || currentStep === 1) && (
-          <div className="absolute bottom-0 left-0 right-0 z-20 p-6 bg-gradient-to-t from-black/80 to-transparent">
-            <Button
-              onClick={handleNext}
-              disabled={!canProceed()}
-              className="w-full h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-600 disabled:to-gray-700 disabled:opacity-50 text-lg font-medium"
-            >
-              {currentStep === 0 ? 'Next' : 'Next'}
-            </Button>
-          </div>
-        )}
       </div>
+
+      {/* Fixed bottom button area */}
+      {(currentStep === 0 || currentStep === 1) && (
+        <div className="sticky bottom-0 left-0 right-0 z-30 p-4 bg-white border-t border-gray-200">
+          <Button
+            onClick={handleNext}
+            disabled={!canProceed()}
+            className="w-full h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-400 text-base font-medium rounded-xl shadow-lg"
+          >
+            {currentStep === 0 ? 'Next' : 'Next'}
+          </Button>
+        </div>
+      )}
+      
+      {(currentStep === 3 || currentStep === 4) && (
+        <div className="sticky bottom-0 left-0 right-0 z-30 p-4 bg-white border-t border-gray-200">
+          <Button
+            onClick={currentStep === 3 ? verifyOTP : onComplete}
+            disabled={currentStep === 3 && (otp.length !== 6 || isVerifying)}
+            className="w-full h-14 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-300 disabled:to-gray-400 text-base font-medium rounded-xl shadow-lg"
+          >
+            {currentStep === 3 ? (
+              isVerifying ? (
+                <div className="flex items-center justify-center">
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                  {currentLanguage === 'te' ? 'వెరిఫై చేస్తోంది...' : 'Verifying...'}
+                </div>
+              ) : (
+                currentLanguage === 'te' ? 'వెరిఫై చేయండి' : 'Verify OTP'
+              )
+            ) : (
+              currentLanguage === 'te' ? 'యాప్‌వి వొనసాగించు' : 'Continue to App'
+            )}
+          </Button>
+        </div>
+      )}
+    </div>
     </div>
   );
 }
