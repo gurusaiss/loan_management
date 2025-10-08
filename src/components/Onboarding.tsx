@@ -29,7 +29,7 @@ export function Onboarding({ onComplete }: OnboardingProps) {
   // Video URLs - Replace these with your own video URLs
   const videoUrls = [
     'https://naliudaykumar.github.io/king-aloha-video/InShot_20251007_182259875%20(2).mp4', // App introduction video
-    'https://naliudaykumar.github.io/king-333/InShot_20251007_200741220.mp4'  // Features overview video
+    'https://naliudaykumar.github.io/new/InShkkkkkkkkkkot_20251008_181743843.mp4'  // Features overview video
   ];
 
   // Translation dictionary for Aadhaar page
