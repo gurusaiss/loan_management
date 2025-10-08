@@ -632,57 +632,58 @@ export function Onboarding({ onComplete }: OnboardingProps) {
               </Button>
             </div>
 
-            <div className="h-full bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 flex items-center justify-center p-6">
-              <div className="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl">
-                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Shield className="h-10 w-10 text-white" />
+            <div className="h-full bg-gradient-to-br from-indigo-900 via-blue-900 to-purple-900 flex items-start justify-start p-4 sm:p-6 overflow-y-auto">
+              <div className="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 w-full max-w-sm mx-auto my-4 sm:my-8 text-center shadow-2xl">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6">
+                  <Shield className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
                 </div>
-
                 
-                
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">
                   {currentLanguage === 'te' ? 'ఆధార్ వెరిఫికేషన్' : 'Aadhaar Verification'}
                 </h2>
                 
-                <p className="text-gray-600 mb-8">
+                <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
                   {currentLanguage === 'te' 
-                    ? 'మీ గుర్తింపు ధృవీకరించడానికి ఆధార్ కార్డ్‌ను స్కాన్ చేయండి లేదా మాన్యువల్‌గా ఎంటర్ చేయండి'
-                    : 'Scan your Aadhaar card or enter details manually to verify your identity'
+                    ? 'ఆధార్ కార్డ్‌ను స్కాన్ చేయండి లేదా నంబర్ నమోదు చేయండి'
+                    : 'Scan Aadhaar card or enter number'
                   }
                 </p>
                 
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <Button
                     onClick={handleCameraScan}
-                    className="w-full h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-2xl"
+                    className="w-full h-12 sm:h-14 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl sm:rounded-2xl text-sm sm:text-base"
                   >
-                    <Camera className="h-5 w-5 mr-3" />
+                    <Camera className="h-4 w-4 sm:h-5 sm:w-5 mr-2 sm:mr-3" />
                     {currentLanguage === 'te' ? 'కెమెరా స్కాన్' : 'Camera Scan'}
                   </Button>
                   
-                  <div className="space-y-3">
-                    <Input
-                      type="text"
-                      placeholder={currentLanguage === 'te' ? 'ఆధార్ నంబర్ నమోదు చేయండి' : 'Enter Aadhaar Number'}
-                      value={aadhaarNumber}
-                      onChange={(e) => {
-                        const value = e.target.value.replace(/\D/g, '').slice(0, 12);
-                        setAadhaarNumber(value);
-                      }}
-                      className="w-full h-12 border-2 border-gray-200 rounded-xl px-4 text-center font-mono tracking-widest"
-                      maxLength={12}
-                    />
-                    <Button
-                      onClick={handleAadhaarContinue}
-                      disabled={aadhaarNumber.length !== 12}
-                      className="w-full h-12 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-400 disabled:to-gray-500 text-white rounded-xl"
-                    >
-                      {currentLanguage === 'te' ? 'కొనసాగించు' : 'Continue'}
-                    </Button>
+                  <div className="text-xs sm:text-sm text-gray-500 my-2">
+                    {currentLanguage === 'te' ? 'లేదా' : 'OR'}
                   </div>
+                  
+                  <Input
+                    type="text"
+                    placeholder={currentLanguage === 'te' ? 'ఆధార్ నంబర్' : 'Aadhaar Number'}
+                    value={aadhaarNumber}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, '').slice(0, 12);
+                      setAadhaarNumber(value);
+                    }}
+                    className="w-full h-11 sm:h-12 border-2 border-gray-200 rounded-lg sm:rounded-xl px-4 text-center font-mono tracking-widest text-sm sm:text-base"
+                    maxLength={12}
+                  />
+                  
+                  <Button
+                    onClick={handleAadhaarContinue}
+                    disabled={aadhaarNumber.length !== 12}
+                    className="w-full h-11 sm:h-12 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-300 disabled:to-gray-400 text-white rounded-lg sm:rounded-xl text-sm sm:text-base"
+                  >
+                    {currentLanguage === 'te' ? 'కొనసాగించు' : 'Continue'}
+                  </Button>
                 </div>
                 
-                <p className="text-xs text-gray-500 mt-6">
+                <p className="text-[10px] sm:text-xs text-gray-500 mt-4 sm:mt-5">
                   {currentLanguage === 'te' 
                     ? 'మీ డేటా సురక్షితంగా మరియు ఎంక్రిప్ట్ చేయబడింది'
                     : 'Your data is secure and encrypted'
