@@ -1,11 +1,28 @@
 import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
 export default defineConfig({
     base: '/loan_management/',
 
-    plugins: [react()],
+    plugins: [
+      react(),
+      VitePWA({
+        registerType: 'autoUpdate',
+        injectRegister: 'auto',
+        manifest: {
+          name: 'Loan Management App',
+          short_name: 'LoanMgr',
+          start_url: '/loan_management/',
+          scope: '/loan_management/',
+          display: 'standalone',
+          theme_color: '#0ea5e9',
+          background_color: '#0b1020',
+          description: 'Smart loan manager onboarding and tools',
+        },
+      }),
+    ],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
